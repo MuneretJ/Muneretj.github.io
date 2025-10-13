@@ -19,29 +19,50 @@
             position: relative;
         }
 
-        .heart {
+        .heart-falling {
             position: fixed;
             color: #ff69b4;
-            font-size: 20px;
-            animation: fall linear infinite;
-            z-index: 1;
-            opacity: 0;
+            font-size: 25px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: fallDown 5s linear;
         }
 
-        @keyframes fall {
+        @keyframes fallDown {
             0% {
-                opacity: 0;
                 transform: translateY(-100px) rotate(0deg);
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
                 opacity: 1;
             }
             100% {
-                opacity: 0;
                 transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 5;
+            animation: floatHeart 4s ease-in-out infinite;
+        }
+
+        @keyframes floatHeart {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px);
+                opacity: 0.6;
+            }
+            25% {
+                transform: translateY(-15px) translateX(10px);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-25px) translateX(-10px);
+                opacity: 0.8;
+            }
+            75% {
+                transform: translateY(-15px) translateX(5px);
+                opacity: 0.9;
             }
         }
 
@@ -103,6 +124,8 @@
             box-shadow: 0 10px 40px rgba(212, 165, 245, 0.3);
             animation: slideIn 1s ease-out;
             border: 3px solid #f5d0fe;
+            position: relative;
+            overflow: visible;
         }
 
         @keyframes slideIn {
@@ -273,7 +296,7 @@
             <div class="big-heart">❤️</div>
         </header>
 
-        <div class="card">
+        <div class="card" id="card1">
             <div class="counter">
                 <span class="counter-text">Hoy celebramos</span>
                 <span class="counter-number">1 AÑO</span>
@@ -281,7 +304,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="card2">
             <p class="message">
                 Mi amor, hace un año que mi vida cambió para siempre. 
                 Aunque la distancia nos separa físicamente, nunca me he sentido más cerca de alguien.
@@ -297,7 +320,7 @@
             "En un año hemos creado mil recuerdos y un amor infinito"
         </div>
 
-        <div class="card">
+        <div class="card" id="card3">
             <h2 style="text-align: center; color: #c026d3; margin-bottom: 30px; font-size: 2em;">
                 Nuestros Momentos Más Lindos
             </h2>
@@ -335,21 +358,25 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="card4">
             <p class="message">
-                Este es solo el comienzo de nuestra historia, mi reina.
-                Quiero muchos años más a tu lado, creando recuerdos,
-                riendo juntos y amándonos cada día más.
+                Aunque estemos lejos, mi corazón siempre está contigo, mi reina.
+                Cada día que pasa es un día menos para volver a verte.
+                Quiero muchos años más a tu lado, sin importar la distancia,
+                porque tú eres mi hogar, estés donde estés.
             </p>
             <p class="message" style="font-size: 1.5em; font-weight: bold; color: #c026d3;">
-                Te amo con todo mi corazón 💕
+                Te amo con todo mi corazón, mi amor a distancia 💕
             </p>
         </div>
 
         <div style="text-align: center; margin: 40px 0;">
-            <button class="love-button" onclick="showLove()">
-                Haz clic aquí 💖
+            <button class="love-button" id="loveBtn">
+                ¡Enviar todo mi amor! 💖
             </button>
+            <p style="color: #a21caf; margin-top: 15px; font-size: 1.1em;">
+                (Haz clic para llenar la pantalla de corazones)
+            </p>
         </div>
 
         <footer class="footer">
@@ -359,47 +386,133 @@
     </div>
 
     <script>
-        // Crear corazones que caen
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-            document.body.appendChild(heart);
+        const heartColors = ['#ff69b4', '#ff1493', '#c71585', '#db7093', '#ff85c1', '#ff6b9d'];
+        const heartEmojis = ['💕', '💖', '💗', '💝', '💘', '❤️', '💓', '💞'];
 
+        // Función para crear un corazón que cae
+        function createFallingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart-falling';
+            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+            heart.style.fontSize = (Math.random() * 15 + 20) + 'px';
+            
+            document.body.appendChild(heart);
+            
             setTimeout(() => {
                 heart.remove();
-            }, 7000);
+            }, 5000);
         }
 
-        // Crear corazones cada 300ms
-        setInterval(createHeart, 300);
+        // Función para crear corazones flotantes alrededor de las cartas
+        function createFloatingHearts() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const numHearts = 3 + Math.floor(Math.random() * 3);
+                
+                for (let i = 0; i < numHearts; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart-float';
+                    heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                    heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+                    
+                    // Posicionar alrededor de la carta
+                    const side = Math.floor(Math.random() * 4);
+                    if (side === 0) { // arriba
+                        heart.style.left = Math.random() * 80 + 10 + '%';
+                        heart.style.top = '-20px';
+                    } else if (side === 1) { // derecha
+                        heart.style.left = 'calc(100% + 10px)';
+                        heart.style.top = Math.random() * 80 + 10 + '%';
+                    } else if (side === 2) { // abajo
+                        heart.style.left = Math.random() * 80 + 10 + '%';
+                        heart.style.bottom = '-20px';
+                    } else { // izquierda
+                        heart.style.left = '-30px';
+                        heart.style.top = Math.random() * 80 + 10 + '%';
+                    }
+                    
+                    heart.style.animationDelay = (i * 0.5) + 's';
+                    heart.style.animationDuration = (3 + Math.random() * 2) + 's';
+                    
+                    card.appendChild(heart);
+                }
+            });
+        }
 
-        // Función del botón
-        function showLove() {
+        // Agregar más corazones flotantes periódicamente
+        function addMoreFloatingHearts() {
+            const cards = document.querySelectorAll('.card');
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+            
+            const heart = document.createElement('div');
+            heart.className = 'heart-float';
+            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+            
+            const side = Math.floor(Math.random() * 4);
+            if (side === 0) {
+                heart.style.left = Math.random() * 80 + 10 + '%';
+                heart.style.top = '-20px';
+            } else if (side === 1) {
+                heart.style.left = 'calc(100% + 10px)';
+                heart.style.top = Math.random() * 80 + 10 + '%';
+            } else if (side === 2) {
+                heart.style.left = Math.random() * 80 + 10 + '%';
+                heart.style.bottom = '-20px';
+            } else {
+                heart.style.left = '-30px';
+                heart.style.top = Math.random() * 80 + 10 + '%';
+            }
+            
+            randomCard.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Botón de amor - EXPLOSIÓN
+        document.getElementById('loveBtn').addEventListener('click', function() {
             const messages = [
-                "¡Te amo más que a nada en el mundo! 💕",
-                "¡Eres el amor de mi vida! ❤️",
-                "¡Gracias por este año maravilloso! 🌟",
-                "¡Contigo todo es mejor! 💖",
-                "¡Eres mi persona favorita! 💝",
-                "¡Feliz aniversario, mi amor! 🎉"
+                "¡Te envío todo mi amor a través de la distancia! 💕",
+                "¡Aunque lejos, mi corazón siempre está contigo! ❤️",
+                "¡Gracias por este año maravilloso juntos! 🌟",
+                "¡Eres lo mejor que me ha pasado! 💖",
+                "¡La distancia no puede con nuestro amor! 💝",
+                "¡Feliz aniversario, mi amor! Pronto estaremos juntos 🎉"
             ];
             
-            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            alert(randomMessage);
+            alert(messages[Math.floor(Math.random() * messages.length)]);
             
-            // Crear explosión de corazones
-            for (let i = 0; i < 20; i++) {
-                setTimeout(createHeart, i * 100);
+            // EXPLOSIÓN de 60 corazones
+            for (let i = 0; i < 60; i++) {
+                setTimeout(createFallingHeart, i * 80);
             }
-        }
+            
+            // Agregar montón de corazones flotantes
+            for (let i = 0; i < 15; i++) {
+                setTimeout(addMoreFloatingHearts, i * 200);
+            }
+        });
 
-        // Crear algunos corazones al cargar
-        for (let i = 0; i < 10; i++) {
-            setTimeout(createHeart, i * 200);
+        // Inicializar
+        setTimeout(() => {
+            createFloatingHearts();
+        }, 1000);
+
+        // Corazones que caen ocasionalmente
+        setInterval(createFallingHeart, 1500);
+
+        // Agregar corazones flotantes cada 4 segundos
+        setInterval(addMoreFloatingHearts, 4000);
+
+        // Algunos corazones iniciales
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createFallingHeart, i * 400);
         }
     </script>
 </body>
