@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Fond étoilé fixe */
+        #stars, #stars2, #stars3 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        #stars {
+            background: transparent;
+            box-shadow: 
+                10px 10px white, 50px 30px white, 150px 50px white,
+                200px 100px white, 300px 80px white, 450px 120px white,
+                550px 40px white, 650px 90px white, 750px 150px white,
+                850px 60px white, 950px 110px white, 1050px 70px white,
+                1150px 130px white, 1250px 20px white, 1350px 100px white,
+                80px 200px white, 180px 250px white, 280px 220px white,
+                380px 280px white, 480px 240px white, 580px 290px white,
+                680px 260px white, 780px 210px white, 880px 270px white,
+                20px 400px white, 120px 450px white, 220px 420px white,
+                320px 480px white, 420px 440px white, 520px 490px white,
+                100px 600px white, 200px 650px white, 300px 620px white;
+            animation: twinkle 3s infinite;
+        }
+
+        #stars2 {
+            background: transparent;
+            box-shadow: 
+                100px 50px white, 250px 100px white, 400px 150px white,
+                600px 80px white, 800px 120px white, 1000px 60px white,
+                1200px 140px white, 90px 300px white, 290px 350px white,
+                490px 320px white, 690px 380px white, 890px 340px white,
+                150px 500px white, 350px 550px white, 550px 520px white;
+            animation: twinkle 4s infinite;
+        }
+
+        #stars3 {
+            background: transparent;
+            box-shadow: 
+                50px 80px white, 180px 120px white, 310px 90px white,
+                440px 160px white, 570px 110px white, 700px 140px white,
+                830px 100px white, 960px 170px white, 70px 280px white,
+                200px 320px white, 330px 290px white, 460px 350px white,
+                40px 480px white, 170px 520px white, 300px 490px white;
+            animation: twinkle 5s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Animation titre d'apparition */
+        #intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeOut 1s 3s forwards;
+        }
+
+        .title {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            opacity: 0;
+            animation: titleAppear 2s forwards;
+            text-align: center;
+            letter-spacing: 10px;
+        }
+
+        @keyframes titleAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Contenu principal */
+        #main-content {
+            opacity: 0;
+            animation: fadeIn 2s 4s forwards;
+            padding: 60px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* En-tête */
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            letter-spacing: 5px;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            color: #4da6ff;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            font-size: 1.2rem;
+            margin-top: 30px;
+        }
+
+        .contact-info a {
+            color: #4da6ff;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .contact-info a:hover {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+
+        /* Sections */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        section {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 15px;
+            border-left: 5px solid #4da6ff;
+            backdrop-filter: blur(10px);
+        }
+
+        section.full-width {
+            grid-column: 1 / -1;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #4da6ff;
+            margin: 30px 0 15px;
+        }
+
+        .date {
+            color: #ffd700;
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        p, li {
+            line-height: 1.9;
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 30px;
+        }
+
+        .experience-item, .education-item {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(77, 166, 255, 0.2);
+        }
+
+        /* Compétences */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .skill {
+            background: rgba(77, 166, 255, 0.15);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #4da6ff;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .skill:hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: #ffd700;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 3rem; }
+            .title { font-size: 4rem; }
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 2.5rem; letter-spacing: 5px; }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .contact-info { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+
+    <!-- Animation titre -->
+    <div id="intro">
+        <div class="title">VOTRE NOM</div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div id="main-content">
+        <header>
+            <h1>PRÉNOM NOM</h1>
+            <p class="subtitle">Développeur Web Full Stack</p>
+            <div class="contact-info">
+                <span>📧 email@exemple.com</span>
+                <span>📱 06 12 34 56 78</span>
+                <span>📍 Paris, France</span>
+                <span><a href="https://linkedin.com" target="_blank">LinkedIn</a></span>
+                <span><a href="https://github.com" target="_blank">GitHub</a></span>
+            </div>
+        </header>
+
+        <div class="content-grid">
+            <section class="full-width">
+                <h2>🎯 Profil</h2>
+                <p>
+                    Développeur passionné avec X années d'expérience dans la création d'applications web modernes et performantes. 
+                    Spécialisé en développement front-end et back-end, avec une forte capacité d'adaptation et un goût prononcé 
+                    pour l'apprentissage de nouvelles technologies. Toujours à la recherche de défis techniques stimulants 
+                    et d'opportunités pour créer des solutions innovantes.
+                </p>
+            </section>
+
+            <section class="full-width">
+                <h2>💼 Expérience Professionnelle</h2>
+                
+                <div class="experience-item">
+                    <h3>Développeur Full Stack</h3>
+                    <p class="date">Janvier 2022 - Présent | Entreprise ABC, Paris</p>
+                    <ul>
+                        <li>Développement d'applications web avec React, Node.js et MongoDB</li>
+                        <li>Conception et optimisation de bases de données SQL et NoSQL</li>
+                        <li>Mise en place d'une architecture microservices avec Docker</li>
+                        <li>Collaboration en équipe agile et utilisation avancée de Git</li>
+                        <li>Amélioration des performances des applications de 40%</li>
+                    </ul>
+                </div>
+
+                <div class="experience-item">
+                    <h3>Développeur Front-End</h3>
+                    <p class="date">Mars 2020 - Décembre 2021 | Startup XYZ, Lyon</p>
+                    <ul>
+                        <li>Création d'interfaces utilisateur modernes et responsive</li>
+                        <li>Intégration d'APIs REST et GraphQL</li>
+                        <li>Développement de composants réutilisables avec React</li>
+                        <li>Tests unitaires avec Jest et React Testing Library</li>
+                        <li>Optimisation SEO et performances web</li>
+                    </ul>
+                </div>
+
+                <div class="experience-item">
+                    <h3>Développeur Web Junior</h3>
+                    <p class="date">Juin 2019 - Février 2020 | Agence Digital, Marseille</p>
+                    <ul>
+                        <li>Développement de sites web avec HTML, CSS, JavaScript</li>
+                        <li>Intégration de templates WordPress personnalisés</li>
+                        <li>Maintenance et support technique client</li>
+                        <li>Gestion de projets en autonomie</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>🎓 Formation</h2>
+                
+                <div class="education-item">
+                    <h3>Master en Informatique</h3>
+                    <p class="date">2018 - 2020</p>
+                    <p>Université de Paris</p>
+                    <p>Spécialisation en développement web et applications mobiles</p>
+                </div>
+
+                <div class="education-item">
+                    <h3>Licence en Informatique</h3>
+                    <p class="date">2015 - 2018</p>
+                    <p>Université de Lyon</p>
+                    <p>Programmation, algorithmes et structures de données</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>🌐 Langues</h2>
+                <ul>
+                    <li>Français : Langue maternelle</li>
+                    <li>Anglais : Courant (niveau B2/C1)</li>
+                    <li>Espagnol : Intermédiaire (niveau A2/B1)</li>
+                </ul>
+
+                <h2 style="margin-top: 50px;">🎨 Centres d'Intérêt</h2>
+                <ul>
+                    <li>Contribution à des projets open source</li>
+                    <li>Veille technologique et nouvelles tendances</li>
+                    <li>Photographie et design graphique</li>
+                    <li>Voyages et découverte de cultures</li>
+                    <li>Gaming et esport</li>
+                </ul>
+            </section>
+        </div>
+
+        <section class="full-width">
+            <h2>🛠️ Compétences Techniques</h2>
+            <div class="skills-grid">
+                <div class="skill">JavaScript</div>
+                <div class="skill">React</div>
+                <div class="skill">Node.js</div>
+                <div class="skill">HTML / CSS</div>
+                <div class="skill">Python</div>
+                <div class="skill">TypeScript</div>
+                <div class="skill">Vue.js</div>
+                <div class="skill">Express</div>
+                <div class="skill">MongoDB</div>
+                <div class="skill">SQL / PostgreSQL</div>
+                <div class="skill">Git / GitHub</div>
+                <div class="skill">Docker</div>
+                <div class="skill">AWS</div>
+                <div class="skill">REST API</div>
+                <div class="skill">Redux</div>
+                <div class="skill">Tailwind CSS</div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
